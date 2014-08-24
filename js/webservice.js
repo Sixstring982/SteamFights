@@ -145,7 +145,7 @@ var createGame = function() {
 		
 		callSteamApi: function(urlPart, callback) {
 			var that = this;
-			var url = "http://www.designiscasual.com/glenn/SteamFights/api/steam.php?url=" + encodeURIComponent(urlPart);
+			var url = "http://www.designiscasual.com/SteamFights/api/steam.php?url=" + encodeURIComponent(urlPart);
 			$.ajax({
 				url: url,
 				dataType: 'json'
@@ -208,7 +208,7 @@ var createGame = function() {
 		
 		getGenres: function(appId, callback) {
 			var that = this;
-			var url = "http://www.designiscasual.com/glenn/SteamFights/api/get_genres.php?app_id=" + encodeURIComponent(appId);
+			var url = "http://www.designiscasual.com/SteamFights/api/get_genres.php?app_id=" + encodeURIComponent(appId);
 			$.ajax({
 				url: url,
 				dataType: 'json'
