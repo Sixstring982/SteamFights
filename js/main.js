@@ -190,7 +190,7 @@ var tickToMiddleX = function(tick, winner) {
 }
 
 var determineWinner = function() {
-    return false; //TODO return the winner, false for Player1 (left)  winning
+    return false; //TODO return the winner, false for Player1 (left) winning
 }
 
 var drawBeamsMiddle = function(tick, particles) {
@@ -213,27 +213,29 @@ var SteamFights = {
 $("#FightButton").on("click", function() {
     Elements.get("gong").play();
 
-	var game = createGame();
-	game.init({
-		usernames: [$("#player1id").val(), $("#player2id").val()],
-		onInfoUpdated: function() {
-			console.log("info updated");
-		},
-		onAttributesUpdated: function() {
-			console.log("attributes updated");
-		},
-		onAttributesCompleted: function() {
-			console.log("attributes completed");
-		},
-		onCompleted: function() {
-			alert("player "+game.winner +" wins!");
-		}
-	});
-	game.start();
+    var intervalID;
+    var game = createGame();
+    game.init({
+        usernames: [$("#player1id").val(), $("#player2id").val()],
+        onInfoUpdated: function() {
+            console.log("info updated");
+        },
+        onAttributesUpdated: function() {
+            console.log("attributes updated");
+        },
+        onAttributesCompleted: function() {
+            console.log("attributes completed");
+        },
+        onCompleted: function() {
+            clearInterval(intervalID);
+            alert("player " + game.winner +" wins!");
+        }
+    });
+    game.start();
+    intervalID = setInterval(function() { SteamFights.tickGame() }, 1000 / FRAMES_PER_SECOND);
 });
 
 var FRAMES_PER_SECOND = 23;
 $(document).ready(function() {
     drawSplash();
-    setInterval(function() { SteamFights.tickGame() }, 1000 / FRAMES_PER_SECOND);
 });
