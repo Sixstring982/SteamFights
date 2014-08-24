@@ -113,6 +113,11 @@ var drawSplash = function() {
     getCanvasContext().drawImage(splash, 0, 0);
 }
 
+var drawBackground = function() {
+    var bg = loadImage("img/arena.png");
+    getCanvasContext().drawImage(bg, 0, 0);
+}
+
 var greenBeamElement = loadImage("img/greenBeam.png");
 var redBeamElement   = loadImage("img/redBeam.png");
 var lightningElement = loadImage("img/fireball.png");
@@ -203,7 +208,7 @@ var SteamFights = {
     particles: [],
     tickGame: function() {
         this.ticks++;
-        clearBackground();
+        drawBackground();
         drawBeamsMiddle(this.ticks * (500.0 / 200.0), this.particles);
         updateParticles(this.particles, this.ticks);
         renderParticles(this.particles);
