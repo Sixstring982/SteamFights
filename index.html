@@ -14,15 +14,9 @@
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
-		<link rel="stylesheet" href="css/steamstyle.css">
+        <link rel="stylesheet" href="css/steamstyle.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
-		
-		<script>
-			var audioElement = document.getElementById("gong");
-			var FightButton = document.getElementById("FightButton");
-			FightButton.onclick(audioElement.play());
-		</script>
-		
+
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -32,12 +26,12 @@
         <!-- Add your site or application content here -->
         <canvas id="SteamFightCanvas" width="640" height="480" style="border:1px solid #000000;">
         </canvas>
-				
-				<audio autoplay="false" autostart="false" id="gong">
-					<source src="audio/GONG.ogg" type="audio/ogg">
-					<source src="audio/GONG.mp3" type="audio/mp3">
-					Your browser sucks a sack of dicks (also doesn't support audios
-				</audio>
+
+        <audio autoplay="false" autostart="false" id="gong">
+          <source id="GongOgg" src="audio/GONG.ogg" type="audio/ogg">
+          <source id="GongMp3" src="audio/GONG.mp3" type="audio/mp3">
+          Your browser sucks a sack of dicks (also doesn't support audios
+        </audio>
 
         <image class="HiddenImage" id="SplashImage" src="img/splash.png">
         <image class="HiddenImage" id="NullImage" src="img/null.png">
@@ -47,9 +41,9 @@
         <form>
            Player 1 Steam ID: <input type="text" name="player1id"><br>
            Player 2 Steam ID: <input type="text" name="player2id"><br>
-        
-        	<button type="button" id="FightButton">FIGHT!</button>
-		</form>
+
+           <button type="button" id="FightButton">FIGHT!</button>
+        </form>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>

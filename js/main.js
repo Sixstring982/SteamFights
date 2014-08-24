@@ -132,6 +132,7 @@ var SteamFights = {
 };
 
 $("#FightButton").on("click", function() {
+    Elements.get("gong").play();
 });
 
 var FRAMES_PER_SECOND = 23;
