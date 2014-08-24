@@ -118,6 +118,15 @@ var drawBackground = function() {
     getCanvasContext().drawImage(bg, 0, 0);
 }
 
+/* BROKEN
+var drawFish = function() {
+    var blueFish = loadImage("img/fish-02-trans.png");
+    var redFish  = loadImage("img/fish-01-trans.png");
+    getCanvasContext().drawImage(blueFish, 0, 0);
+    getCanvasContext().drawImage(redFish, 0, 170);
+}
+*/
+
 var greenBeamElement = loadImage("img/greenBeam.png");
 var redBeamElement   = loadImage("img/redBeam.png");
 var lightningElement = loadImage("img/fireball.png");
@@ -135,7 +144,7 @@ var BEAM_AMPLITUDE = 10;
 var BEAM_HEIGHT_COEFF_1 = 1.5 * BEAM_AMPLITUDE;
 var BEAM_HEIGHT_COEFF_2 = 1   * BEAM_AMPLITUDE;
 var BEAM_HEIGHT_COEFF_3 = 2   * BEAM_AMPLITUDE;
-var TICK_TO_MIDDLE_X_INTERVAL = 100;
+var TICK_TO_MIDDLE_X_INTERVAL = 200;
 var SCREEN_WIDTH = 640;
 var SCREEN_HEIGHT = 480;
 var HALF_SCREEN_WIDTH = SCREEN_WIDTH / 2;
@@ -160,7 +169,7 @@ var drawBeams = function(startX, xMiddle, endX, tick, particles) {
         }
     }
 
-    if((tick / BEAM_SPEED) < TICK_TO_MIDDLE_X_INTERVAL * 5) {
+    if(xMiddle < SCREEN_WIDTH && xMiddle > 0) {
         var ctx = getCanvasContext();
         ctx.save();
         ctx.translate(xMiddle, midY);
@@ -178,19 +187,15 @@ var tickToMiddleX = function(tick, winner) {
     if(tick < TICK_TO_MIDDLE_X_INTERVAL) {
         return tick + HALF_SCREEN_WIDTH;
     } else if(tick < TICK_TO_MIDDLE_X_INTERVAL * 2) {
-        return (TICK_TO_MIDDLE_X_INTERVAL + HALF_SCREEN_WIDTH) -
-               (2 * tick - TICK_TO_MIDDLE_X_INTERVAL);
+        return -(tick - TICK_TO_MIDDLE_X_INTERVAL) + HALF_SCREEN_WIDTH;
     } else if(tick < TICK_TO_MIDDLE_X_INTERVAL * 3) {
-        return tick + HALF_SCREEN_WIDTH / 2;
+        return (tick - TICK_TO_MIDDLE_X_INTERVAL * 2) + HALF_SCREEN_WIDTH;
     } else if(tick < TICK_TO_MIDDLE_X_INTERVAL * 4) {
-        return (TICK_TO_MIDDLE_X_INTERVAL + HALF_SCREEN_WIDTH) -
-               (2 * (tick / 3) - TICK_TO_MIDDLE_X_INTERVAL);
+        return -(tick - TICK_TO_MIDDLE_X_INTERVAL * 3) + HALF_SCREEN_WIDTH;
     } else if(tick < TICK_TO_MIDDLE_X_INTERVAL * 5) {
-        return (winner ? (-tick * 2) : tick) +
-               (winner ? 1000 :
-                HALF_SCREEN_WIDTH / 3.5);
+        return (tick - TICK_TO_MIDDLE_X_INTERVAL * 4) + HALF_SCREEN_WIDTH;
     } else {
-        return winner ? 0 : SCREEN_WIDTH;
+        return (winner ? -1 : 1) * (tick - TICK_TO_MIDDLE_X_INTERVAL * 4) + HALF_SCREEN_WIDTH;
     }
 }
 
