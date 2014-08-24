@@ -228,6 +228,7 @@ $("#FightButton").on("click", function() {
         },
         onCompleted: function() {
             clearInterval(intervalID);
+            drawSplash();
             alert("player " + game.winner +" wins!");
         }
     });
