@@ -11,6 +11,58 @@ var Elements = {
     }
 };
 
+var Particle = function(x, y) {
+    this.initialX = x;
+    this.initialY = y;
+    this.x = x;
+    this.y = y;
+    this.dir = Math.random() * 2 * Math.PI;
+    this.vel = Math.random() * 100 + 1;
+    this.alive = true;
+}
+
+var drawParticle = function(p) {
+    if(p.alive) {
+        var ctx = getCanvasContext();
+        var oldFill = ctx.fillStyle;
+        ctx.fillStyle = "#FFFF00";
+        ctx.fillRect(p.x, p.y, 3, 3);
+        ctx.fillStyle = oldFill;
+    }
+}
+
+var renderParticles = function(particles) {
+    for(x = 0; x < particles.length; x++) {
+        drawParticle(particles[x]);
+    }
+}
+
+var updateParticle = function(p, tick) {
+    if(p.alive) {
+        p.x += p.vel * Math.cos(p.dir);
+        p.y += p.vel * Math.sin(p.dir);
+        if(Math.pow(p.x - p.initialX, 2) + Math.pow(p.y - p.initialY, 2) > 500000) {
+            p.alive = false;
+        }
+    }
+}
+
+var updateParticles = function(particles, tick) {
+    for(x = 0; x < particles.length; x++) {
+        updateParticle(particles[x], tick);
+    }
+}
+
+var setupNewParticle = function(particles, x, y) {
+    for(i = 0; i < particles.length; i++) {
+        if(!particles[i].alive) {
+            particles[i] = new Particle(x, y);
+            return;
+        }
+    }
+    particles.push(new Particle(x, y));
+}
+
 var getCanvasContext = function() {
     return Elements.getCanvas().getContext("2d");
 }
@@ -75,8 +127,13 @@ var BEAM_AMPLITUDE = 10;
 var BEAM_HEIGHT_COEFF_1 = 1.5 * BEAM_AMPLITUDE;
 var BEAM_HEIGHT_COEFF_2 = 1   * BEAM_AMPLITUDE;
 var BEAM_HEIGHT_COEFF_3 = 2   * BEAM_AMPLITUDE;
+var TICK_TO_MIDDLE_X_INTERVAL = 100;
+var SCREEN_WIDTH = 640;
+var SCREEN_HEIGHT = 480;
+var HALF_SCREEN_WIDTH = SCREEN_WIDTH / 2;
 
-var drawBeams = function(startX, xMiddle, endX, tick) {
+
+var drawBeams = function(startX, xMiddle, endX, tick, particles) {
     var screenWidth = endX - startX;
     var screenHeight = Elements.getCanvas().height / 2;
     var y;
@@ -94,18 +151,17 @@ var drawBeams = function(startX, xMiddle, endX, tick) {
         }
     }
 
-    var ctx = getCanvasContext();
-    ctx.save();
-    ctx.translate(xMiddle, midY);
-    ctx.rotate(Math.random() * 2 * Math.PI);
-    ctx.drawImage(lightningElement, -lightningElement.width / 2, -lightningElement.height / 2);
-    ctx.restore();
+    if((tick / BEAM_SPEED) < TICK_TO_MIDDLE_X_INTERVAL * 5) {
+        var ctx = getCanvasContext();
+        ctx.save();
+        ctx.translate(xMiddle, midY);
+        ctx.rotate(Math.random() * 2 * Math.PI);
+        ctx.drawImage(lightningElement, -lightningElement.width / 2,
+                      -lightningElement.height / 2);
+        ctx.restore();
+        setupNewParticle(particles, xMiddle, midY);
+    }
 };
-
-var TICK_TO_MIDDLE_X_INTERVAL = 100;
-var SCREEN_WIDTH = 640;
-var SCREEN_HEIGHT = 480;
-var HALF_SCREEN_WIDTH = SCREEN_WIDTH / 2;
 
 var tickToMiddleX = function(tick, winner) {
     if(tick < TICK_TO_MIDDLE_X_INTERVAL) {
@@ -131,16 +187,19 @@ var determineWinner = function() {
     return false; //TODO return the winner, false for Player1 (left)  winning
 }
 
-var drawBeamsMiddle = function(tick) {
-    drawBeams(50, Math.round(tickToMiddleX(tick, determineWinner())), 590, tick);
+var drawBeamsMiddle = function(tick, particles) {
+    drawBeams(50, Math.round(tickToMiddleX(tick, determineWinner())), 590, tick, particles);
 }
 
 var SteamFights = {
     ticks: 0,
+    particles: [],
     tickGame: function() {
         this.ticks++;
         clearBackground();
-        drawBeamsMiddle(this.ticks * (500.0 / 200.0), this.ticks);
+        drawBeamsMiddle(this.ticks * (500.0 / 200.0), this.particles);
+        updateParticles(this.particles, this.ticks);
+        renderParticles(this.particles);
     }
 };
 
