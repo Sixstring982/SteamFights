@@ -232,7 +232,7 @@ $("#FightButton").on("click", function() {
             clearInterval(intervalID);
             drawSplash();
             SteamFights.ticks = 0;
-            alert("player " + game.winner +" wins!");
+            alert("player " + this.usernames[game.winner] +" wins!");
         }
     });
     game.start();
