@@ -70,18 +70,22 @@ function get_player_megainfo($username) {
 	$games = $owned_games["games"];
 	$genres_result = array();
 	usort($games, "cmp");
+	$game_count = 0;
+	$total_time = 0;
 	for($i = 0; $i < sizeof($games); $i += 1) {
 		$game = $games[$i];
 		$appid = $game["appid"];
 		$game_name = $game["name"];
 		$playtime = $game["playtime_forever"];
-		if($i > 10) {
+		$total_time += $playtime;
+		if($game_count > 10) {
 			continue;
 		}
 		$genres = get_genres($appid);
 		if(!$genres) {
 			continue;
 		}
+		++$game_count;
 		for($j = 0; $j < sizeof($genres); $j += 1) {
 			$genre = $genres[$j];
 			if(!array_key_exists($genre, $genres_result)) {
@@ -93,6 +97,7 @@ function get_player_megainfo($username) {
 	$result = array();
 	$result["player"] = get_player_info($steam_id);
 	$result["genres"] = $genres_result;
+	$result["total_time"] = $total_time;
 	return $result;
 }
 
