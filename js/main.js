@@ -5,6 +5,9 @@ var Elements = {
             return (this.canvas = document.getElementById("SteamFightCanvas"));
         }
         return this.canvas;
+    },
+    get: function(id) {
+        return document.getElementById(id);
     }
 };
 
@@ -50,14 +53,27 @@ var fillNullImage = function() {
     }
 }
 
-$("#FightButton").on("click", function() {
-
-});
-
 var drawSplash = function() {
     var splash = loadImage("img/splash.png");
     getCanvasContext().drawImage(splash, 0, 0);
 }
+
+var greenBeamElement = Elements.get("GreenBeamImage");
+var redBeamElement   = Elements.get("RedBeamImage");
+
+var drawBeamElement = function(x, y, red) {
+    var img = red ?
+              redBeamElement :
+              greenBeamElement;
+
+    getCanvasContext.drawImage(img, x, y);
+}
+
+var drawBeams = function(xMiddle) {
+    var width =
+    for(x = 0; x <
+}
+
 
 var SteamFights = {
     ticks: 0,
@@ -69,6 +85,10 @@ var SteamFights = {
         }
     }
 };
+
+$("#FightButton").on("click", function() {
+
+});
 
 var FRAMES_PER_SECOND = 23;
 $(document).ready(function() {
