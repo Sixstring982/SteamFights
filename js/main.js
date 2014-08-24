@@ -218,8 +218,8 @@ $("#FightButton").on("click", function() {
     game.init({
         usernames: [$("#player1id").val(), $("#player2id").val()],
         onInfoUpdated: function() {
-			$('#player1Stats').find('#name').html(game.summaries[0]["personaname"]);
-			$('#player2Stats').find('#name').html(game.summaries[1]["personaname"]);
+            $('#player1Stats').find('#name').html(game.summaries[0]["personaname"]);
+            $('#player2Stats').find('#name').html(game.summaries[1]["personaname"]);
             console.log("info updated");
         },
         onAttributesUpdated: function() {
