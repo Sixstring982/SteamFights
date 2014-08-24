@@ -60,6 +60,7 @@ var drawSplash = function() {
 
 var greenBeamElement = loadImage("img/greenBeam.png");
 var redBeamElement   = loadImage("img/redBeam.png");
+var lightningElement = loadImage("img/lightning.png");
 
 var drawBeamElement = function(x, y, red) {
     var img = red ?
@@ -79,14 +80,26 @@ var drawBeams = function(startX, xMiddle, endX, tick) {
     var screenWidth = endX - startX;
     var screenHeight = Elements.getCanvas().height / 2;
     var y;
+    var midY;
     tick *= BEAM_SPEED;
     for(x = startX; x < endX; x++) {
         y = Math.sin(((x + tick) * Math.PI) / 200.0) * BEAM_HEIGHT_COEFF_1 +
-            Math.cos(((x + tick) * Math.PI) / 125.0) * BEAM_HEIGHT_COEFF_2 +
-            Math.cos(Math.sin(((x + tick) * Math.PI) / 1000.0)) * BEAM_HEIGHT_COEFF_3 +
+            Math.cos(((x + tick * 1.2) * Math.PI) / 125.0) * BEAM_HEIGHT_COEFF_2 +
+            Math.cos(Math.sin(((x + tick * 1.1) * Math.PI) / 1000.0)) * BEAM_HEIGHT_COEFF_3 +
             screenHeight;
         drawBeamElement(x, y, x > xMiddle);
+
+        if(x == xMiddle) {
+            midY = y;
+        }
     }
+
+    var ctx = getCanvasContext();
+    ctx.save();
+    ctx.translate(xMiddle, midY);
+    ctx.rotate(Math.random() * 2 * Math.PI);
+    ctx.drawImage(lightningElement, -lightningElement.width / 2, -lightningElement.height / 2);
+    ctx.restore();
 };
 
 var TICK_TO_MIDDLE_X_INTERVAL = 100;
@@ -119,7 +132,7 @@ var determineWinner = function() {
 }
 
 var drawBeamsMiddle = function(tick) {
-    drawBeams(50, tickToMiddleX(tick, determineWinner()), 590, tick);
+    drawBeams(50, Math.round(tickToMiddleX(tick, determineWinner())), 590, tick);
 }
 
 var SteamFights = {
