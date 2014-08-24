@@ -244,7 +244,9 @@ $("#FightButton").on("click", function() {
             this.gamewinner = game.winner;
             clearInterval(intervalID);
             SteamFights.ticks = 0;
-            alert("player " + this.usernames[game.winner] +" wins!");
+            var winnerStr = game.winner == -1 ? "Tie!" :
+                            "player " + this.usernames[game.winner] + " wins!";
+            alert(winnerStr);
             drawSplash();
         }
     });
