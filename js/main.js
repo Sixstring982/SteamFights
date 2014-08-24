@@ -115,7 +115,7 @@ var drawSplash = function() {
 
 var greenBeamElement = loadImage("img/greenBeam.png");
 var redBeamElement   = loadImage("img/redBeam.png");
-var lightningElement = loadImage("img/lightning.png");
+var lightningElement = loadImage("img/fireball.png");
 
 var drawBeamElement = function(x, y, red) {
     var img = red ?
