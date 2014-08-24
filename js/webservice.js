@@ -257,14 +257,6 @@ var createGame = function() {
 };
 
 
-var game;
-function onFightButtonClick() {
-	game = createGame();
-	game.init({
-		usernames: [$("#player1id").val(), $("#player2id").val()]
-	});
-	game.start()
-}
 /*
 
 function loadPlayer(username, callback) {

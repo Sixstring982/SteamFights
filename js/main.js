@@ -208,6 +208,24 @@ var SteamFights = {
 
 $("#FightButton").on("click", function() {
     Elements.get("gong").play();
+
+	var game = createGame();
+	game.init({
+		usernames: [$("#player1id").val(), $("#player2id").val()],
+		onInfoUpdated: function() {
+			console.log("info updated");
+		},
+		onAttributesUpdated: function() {
+			console.log("attributes updated");
+		},
+		onAttributesCompleted: function() {
+			console.log("attributes completed");
+		},
+		onCompleted: function() {
+			alert("player "+game.winner +" wins!");
+		}
+	});
+	game.start();
 });
 
 var FRAMES_PER_SECOND = 23;
