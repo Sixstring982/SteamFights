@@ -1,0 +1,31 @@
+body {
+	
+	margin: 0;
+	padding: 0;
+	
+}
+
+
+section {
+	
+	
+	
+}
+
+article {
+	
+	width: 960px;
+	margin: 100px auto;
+	
+}
+
+ul {
+	
+	float: left;
+	margin: 0 15px 0 0;
+	padding: 15px;
+	list-style: none;
+	width: 100px;
+	border: 1px solid #7f7f7f;
+	
+}
