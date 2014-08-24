@@ -229,6 +229,7 @@ $("#FightButton").on("click", function() {
         onCompleted: function() {
             clearInterval(intervalID);
             drawSplash();
+            SteamFights.ticks = 0;
             alert("player " + game.winner +" wins!");
         }
     });
