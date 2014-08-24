@@ -69,21 +69,57 @@ var drawBeamElement = function(x, y, red) {
     getCanvasContext().drawImage(img, x, y);
 };
 
+var BEAM_SPEED = 20;
+var BEAM_AMPLITUDE = 10;
+var BEAM_HEIGHT_COEFF_1 = 1.5 * BEAM_AMPLITUDE;
+var BEAM_HEIGHT_COEFF_2 = 1   * BEAM_AMPLITUDE;
+var BEAM_HEIGHT_COEFF_3 = 2   * BEAM_AMPLITUDE;
+
 var drawBeams = function(startX, xMiddle, endX, tick) {
     var screenWidth = endX - startX;
     var screenHeight = Elements.getCanvas().height / 2;
     var y;
-    tick *= 150;
+    tick *= BEAM_SPEED;
     for(x = startX; x < endX; x++) {
-        y = Math.sin(((x + tick) * Math.PI) / 200.0) * 70 +
-            Math.cos(((x + tick) * Math.PI) / 125.0) * 50 +
-            Math.cos(Math.sin(((x + tick) * Math.PI) / 1000.0)) * 100 + screenHeight;
+        y = Math.sin(((x + tick) * Math.PI) / 200.0) * BEAM_HEIGHT_COEFF_1 +
+            Math.cos(((x + tick) * Math.PI) / 125.0) * BEAM_HEIGHT_COEFF_2 +
+            Math.cos(Math.sin(((x + tick) * Math.PI) / 1000.0)) * BEAM_HEIGHT_COEFF_3 +
+            screenHeight;
         drawBeamElement(x, y, x > xMiddle);
     }
 };
 
-var drawBeamsMiddle = function(xMiddle, tick) {
-    drawBeams(50, xMiddle, 590, tick);
+var TICK_TO_MIDDLE_X_INTERVAL = 100;
+var SCREEN_WIDTH = 640;
+var SCREEN_HEIGHT = 480;
+var HALF_SCREEN_WIDTH = SCREEN_WIDTH / 2;
+
+var tickToMiddleX = function(tick, winner) {
+    if(tick < TICK_TO_MIDDLE_X_INTERVAL) {
+        return tick + HALF_SCREEN_WIDTH;
+    } else if(tick < TICK_TO_MIDDLE_X_INTERVAL * 2) {
+        return (TICK_TO_MIDDLE_X_INTERVAL + HALF_SCREEN_WIDTH) -
+               (2 * tick - TICK_TO_MIDDLE_X_INTERVAL);
+    } else if(tick < TICK_TO_MIDDLE_X_INTERVAL * 3) {
+        return tick + HALF_SCREEN_WIDTH / 2;
+    } else if(tick < TICK_TO_MIDDLE_X_INTERVAL * 4) {
+        return (TICK_TO_MIDDLE_X_INTERVAL + HALF_SCREEN_WIDTH) -
+               (2 * (tick / 3) - TICK_TO_MIDDLE_X_INTERVAL);
+    } else if(tick < TICK_TO_MIDDLE_X_INTERVAL * 5) {
+        return (winner ? (-tick * 2) : tick) +
+               (winner ? 1000 :
+                HALF_SCREEN_WIDTH / 3.5);
+    } else {
+        return winner ? 0 : SCREEN_WIDTH;
+    }
+}
+
+var determineWinner = function() {
+    return false; //TODO return the winner, false for Player1 (left)  winning
+}
+
+var drawBeamsMiddle = function(tick) {
+    drawBeams(50, tickToMiddleX(tick, determineWinner()), 590, tick);
 }
 
 var SteamFights = {
@@ -96,7 +132,6 @@ var SteamFights = {
 };
 
 $("#FightButton").on("click", function() {
-    drawBeams(200, 1);
 });
 
 var FRAMES_PER_SECOND = 23;
