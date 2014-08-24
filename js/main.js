@@ -16,8 +16,9 @@ var Particle = function(x, y) {
     this.initialY = y;
     this.x = x;
     this.y = y;
+    this.gravy = 0;
     this.dir = Math.random() * 2 * Math.PI;
-    this.vel = Math.random() * 100 + 1;
+    this.vel = Math.random() * 25 + 1;
     this.alive = true;
 }
 
@@ -41,6 +42,8 @@ var updateParticle = function(p, tick) {
     if(p.alive) {
         p.x += p.vel * Math.cos(p.dir);
         p.y += p.vel * Math.sin(p.dir);
+        p.gravy++;
+        p.y += p.gravy;
         if(Math.pow(p.x - p.initialX, 2) + Math.pow(p.y - p.initialY, 2) > 500000) {
             p.alive = false;
         }
@@ -188,7 +191,7 @@ var determineWinner = function() {
 }
 
 var drawBeamsMiddle = function(tick, particles) {
-    drawBeams(50, Math.round(tickToMiddleX(tick, determineWinner())), 590, tick, particles);
+    drawBeams(0, Math.round(tickToMiddleX(tick, determineWinner())), SCREEN_WIDTH, tick, particles);
 }
 
 var SteamFights = {
