@@ -199,8 +199,10 @@ var tickToMiddleX = function(tick, winner) {
     }
 }
 
+var gameWinner = false;
+
 var determineWinner = function() {
-    return false; //TODO return the winner, false for Player1 (left) winning
+    return gameWinner; //TODO return the winner, false for Player1 (left) winning
 }
 
 var drawBeamsMiddle = function(tick, particles) {
@@ -239,10 +241,11 @@ $("#FightButton").on("click", function() {
             console.log("attributes completed");
         },
         onCompleted: function() {
+            this.gamewinner = game.winner;
             clearInterval(intervalID);
-            drawSplash();
             SteamFights.ticks = 0;
             alert("player " + this.usernames[game.winner] +" wins!");
+            drawSplash();
         }
     });
     game.start();
