@@ -134,6 +134,7 @@ var TICK_TO_MIDDLE_X_INTERVAL = 100;
 var SCREEN_WIDTH = 640;
 var SCREEN_HEIGHT = 480;
 var HALF_SCREEN_WIDTH = SCREEN_WIDTH / 2;
+var PARTICLES_PER_FRAME = 10;
 
 
 var drawBeams = function(startX, xMiddle, endX, tick, particles) {
@@ -162,7 +163,9 @@ var drawBeams = function(startX, xMiddle, endX, tick, particles) {
         ctx.drawImage(lightningElement, -lightningElement.width / 2,
                       -lightningElement.height / 2);
         ctx.restore();
-        setupNewParticle(particles, xMiddle, midY);
+        for(i = 0; i < PARTICLES_PER_FRAME; i++) {
+            setupNewParticle(particles, xMiddle, midY);
+        }
     }
 };
 
@@ -191,7 +194,8 @@ var determineWinner = function() {
 }
 
 var drawBeamsMiddle = function(tick, particles) {
-    drawBeams(0, Math.round(tickToMiddleX(tick, determineWinner())), SCREEN_WIDTH, tick, particles);
+    drawBeams(0, Math.round(tickToMiddleX(tick, determineWinner())),
+              SCREEN_WIDTH, tick, particles);
 }
 
 var SteamFights = {
